@@ -78,10 +78,10 @@ xdk.environment.addEventListener(xdk.environment.SYSTEM.KEYDOWN, ({ id }) => {
 ### focusManager
 
 #### focusManager.changeFocus(focusId: string): void
-Use this to change the existing focused element. If using withFocus, this will forward the focus if necessary, and will rerender just the unfocused and new focused components.
+Use this to change the existing focused element. If using `withFocus`, this will forward the focus if necessary, and will rerender just the unfocused and new focused components.
 
 #### focusManager.navigateFocus(direction: string): void
-This will move the focus in a certain direction, and when using withFocus it will be able to calculate the next focused element.
+This will move the focus in a certain direction, and when using `withFocus` it will be able to calculate the next focused element.
 
 #### focusManager.listenToFocusChanged(fn: (data, previousData): void): removeListenerFn
 You can use this in some components to be notified when the focus change. Remember to unlisten (using the same function reference) on componentWillUnmount: focusManager.unlistenToFocusChanged(fn).
@@ -173,37 +173,39 @@ This will return the navigation state object. For performance reasons it will no
 Collection of Higher-Order Components for React.
 
 #### withFocus
-Provides navigation features by defining a nav prop which will be used to (via the focusManager and navigationService) update the navigation and notify the necessary components.
+Provides navigation features by defining a `nav` prop which will be used to (via the `focusManager` and `navigationService`) update the navigation and notify the necessary components.
 
 ##### nav prop structure
 Property	Description
-id	String. Must have. Unique focus id for the nav system.
-nextup	String. Declares the next up component id.
-nextdown	String. Declares the next down component id.
-nextleft	String. Declares the next left component id.
-nextright	String. Declares the next right component id.
-parent	String. Declares the parent id.
-skip	Boolean. Allows skipping when navigating the focus. Please check "Skip Behaviour" section for more details.
-forwardFocus	String. A focus id from another component to forward focus when focusing the current id.
-useLastFocus	Boolean. Whether to remember the last focus status when leave the component which has focusable children.
-internal	Object.
-internal.nextup	Function. Called when navigating with nextup.
-internal.nextdown	Function. Called when navigating with nextdown.
-internal.nextleft	Function. Called when navigating with nextleft.
-internal.nextright	Function. Called when navigating with nextright.
-directionReassign	Object. Used to remap the direction of next up/down/left/right. Mainly used for switching right to left app mode.
-When passing an internal function, they will be called instead of using the respective navigation value (e.g. internal.nextup takes preference over nextup: 'foo'). When returning true in an internal function, the navigation is stopped. This allows for custom behavior like changing the focus dynamically.
+- id	String. Must have. Unique focus id for the nav system.
+- nextup	String. Declares the next up component id.
+- nextdown	String. Declares the next down component id.
+- nextleft	String. Declares the next left component id.
+- nextright	String. Declares the next right component id.
+- parent	String. Declares the parent id.
+- skip	Boolean. Allows skipping when navigating the focus. Please check "Skip Behaviour" section for more details.
+- forwardFocus	String. A focus id from another component to forward focus when focusing the current id.
+- useLastFocus	Boolean. Whether to remember the last focus status when leave the component which has focusable children.
+- internal	Object.
+- internal.nextup	Function. Called when navigating with nextup.
+- internal.nextdown	Function. Called when navigating with nextdown.
+- internal.nextleft	Function. Called when navigating with nextleft.
+- internal.nextright	Function. Called when navigating with nextright.
+- directionReassign	Object. Used to remap the direction of next up/down/left/right. Mainly used for switching right to left app mode.
 
-#### Skip Behaviour
-When setting skip: true inside the nav, for example in nav={{ id: 'idValue', nextright: 'idValue2', skip: true }}, it is important to know the expected behaviour:
+When passing an `internal` function, they will be called instead of using the respective navigation value (e.g. `internal.nextup` takes preference over `nextup: 'foo'`). When returning true in an internal function, the navigation is stopped. This allows for custom behavior like changing the focus dynamically.
 
-When there are several consecutive skipped components, none of them will be focused in a single press
-When the skipped component is the last in the direction (including other parents), the navigation will be stopped in the last non-skipped component
-A potentially skipped component should NOT be focused directly with focusManager.changeFocus('...')
-When skipping a container, and the focus not yet in any of its children components, all the children components would be skipped on navigation
-Please check the Storybook stories or the test cases for withFocus to see the current behaviours
-This is a recent feature, please comment any issue and we will add more tests for edge cases
-withForwardFocus
+##### Skip Behaviour
+When setting skip: true inside the nav, for example in `nav={{ id: 'idValue', nextright: 'idValue2', skip: true }}`, it is important to know the expected behaviour:
+
+- When there are several consecutive skipped components, none of them will be focused in a single press
+- When the skipped component is the last in the direction (including other parents), the navigation will be stopped in the last non-skipped component
+- A potentially skipped component should NOT be focused directly with focusManager.changeFocus('...')
+- When skipping a container, and the focus not yet in any of its children components, all the children components would be skipped on navigation
+- Please check the Storybook stories or the test cases for withFocus to see the current behaviours
+- This is a recent feature, please comment any issue and we will add more tests for edge cases
+
+#### withForwardFocus
 Higher-Order Component that wraps a component to always forward the focus to a certain id when this component is mounted.
 
 #### withLayout
